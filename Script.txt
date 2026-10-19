@@ -1,0 +1,98 @@
+
+-- MM2 HALLOWEEN | MOBILE UI
+-- Interface + Anti-AFK
+-- Execute em um ambiente autorizado no Roblox Studio.
+
+local Players = game:GetService("Players")
+local VirtualUser = game:GetService("VirtualUser")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "MM2Halloween"
+gui.ResetOnSpawn = false
+gui.Parent = playerGui
+
+local main = Instance.new("Frame")
+main.Size = UDim2.new(0, 310, 0, 340)
+main.Position = UDim2.new(0.5, -155, 0.3, 0)
+main.BackgroundColor3 = Color3.fromRGB(24, 8, 38)
+main.Parent = gui
+
+Instance.new("UICorner", main).CornerRadius =
+    UDim.new(0, 14)
+
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(190, 45, 255)
+stroke.Thickness = 2
+stroke.Parent = main
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, -45, 0, 48)
+title.Position = UDim2.new(0, 12, 0, 0)
+title.BackgroundTransparency = 1
+title.Text = "🎃 MM2 HALLOWEEN"
+title.TextColor3 = Color3.fromRGB(255, 145, 30)
+title.TextScaled = true
+title.Font = Enum.Font.GothamBold
+title.Parent = main
+
+local function makeButton(text, y, callback)
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(1, -24, 0, 43)
+    button.Position = UDim2.new(0, 12, 0, y)
+    button.BackgroundColor3 = Color3.fromRGB(48, 17, 65)
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.Text = text
+    button.TextScaled = true
+    button.Font = Enum.Font.GothamBold
+    button.Parent = main
+
+    Instance.new("UICorner", button).CornerRadius =
+        UDim.new(0, 9)
+
+    button.MouseButton1Click:Connect(callback)
+    return button
+end
+
+local antiAFK = false
+local afkButton
+
+afkButton = makeButton("💤 Anti-AFK: OFF", 60, function()
+    antiAFK = not antiAFK
+    afkButton.Text = "💤 Anti-AFK: " ..
+        (antiAFK and "ON" or "OFF")
+end)
+
+makeButton("🌱 Auto Farm: OFF", 111, function()
+    warn("Auto Farm ainda não implementado.")
+end)
+
+makeButton("♻️ Auto Respawn: OFF", 162, function()
+    warn("Auto Respawn ainda não implementado.")
+end)
+
+makeButton("🛡️ Anti Fling / Void: OFF", 213, function()
+    warn("Anti Fling ainda não implementado.")
+end)
+
+local stats = Instance.new("TextLabel")
+stats.Size = UDim2.new(1, -24, 0, 45)
+stats.Position = UDim2.new(0, 12, 0, 275)
+stats.BackgroundTransparency = 1
+stats.Text = "HALLOWEEN STATS\nInterface carregada!"
+stats.TextColor3 = Color3.fromRGB(220, 190, 255)
+stats.TextScaled = true
+stats.Font = Enum.Font.Gotham
+stats.Parent = main
+
+player.Idled:Connect(function()
+    if antiAFK then
+        pcall(function()
+            VirtualUser:CaptureController()
+            VirtualUser:ClickButton2(Vector2.new(0, 0))
+        end)
+    end
+end)
+
+print("MM2 Halloween carregado!")
